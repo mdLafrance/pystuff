@@ -23,23 +23,9 @@ class LinkedList:
             except TypeError:
                 print("Error, could not build linkedlist out of non-iterable item")
 
-    def add(self, node):
-        if not isinstance(node, LinkedListNode):
-            llnode = LinkedListNode(node)
-
-        if self.first is None:
-            self.first = llnode
-
-        if self.last is not None:
-            self.last.next = llnode
-
-        self.last = llnode
-
-    def reverse(self):
-        last = self.last
+    def __add__(self, o):
+        self.last.next = o.first
         
-
-
     def __str__(self):
         s = ""
 
@@ -64,3 +50,36 @@ class LinkedList:
             ptr = ptr.next
 
         return length
+
+    def __getitem__(self, i):
+        if i < 0:
+            raise IndexError("Negative index supplied")
+        
+        if i > len(self)-1:
+            raise IndexError("Index greater than size of LinkedList")
+
+        ptr = self.first
+
+        k = 0
+
+        while k < i:
+            ptr = ptr.next
+
+            k += 1
+
+        return ptr
+
+    def add(self, node):
+        if not isinstance(node, LinkedListNode):
+            llnode = LinkedListNode(node)
+
+        if self.first is None:
+            self.first = llnode
+
+        if self.last is not None:
+            self.last.next = llnode
+
+        self.last = llnode
+
+    def reverse(self):
+        last = self.last
