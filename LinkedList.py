@@ -16,6 +16,9 @@ class LinkedList:
         self.first = None
         self.last = None
 
+        self.iterItem = None # For iterable implementation
+        self.firstIter = True
+
         if iterable is not None:
             try:
                 for item in iterable:
@@ -69,6 +72,23 @@ class LinkedList:
 
         return ptr
 
+    def __iter__(self):
+        self.iterItem = self.first
+        self.firstIter = True
+
+        return self
+
+    def __next__(self):
+        if not self.firstIter:
+            self.iterItem = self.iterItem.next
+        else:
+            self.firstIter = False
+
+        if self.iterItem is None:
+            raise StopIteration()
+
+        return self.iterItem
+
     def add(self, node):
         if not isinstance(node, LinkedListNode):
             llnode = LinkedListNode(node)
@@ -83,3 +103,21 @@ class LinkedList:
 
     def reverse(self):
         last = self.last
+
+    def intersection(self, o):
+        selfItems = set()
+        
+        for i in self:
+            selfItems.add(i.val)
+
+        for i in o:
+            if i.val in selfItems:
+                return i.val
+
+        return None
+
+if __name__ == "__main__":
+    a = LinkedList([1,2,3,4])
+    b = LinkedList([6,3,4])
+
+    print(a.intersection(b))
